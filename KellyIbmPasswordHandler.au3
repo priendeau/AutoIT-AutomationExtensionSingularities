@@ -1,12 +1,19 @@
+; *** Start added by AutoIt3Wrapper ***
+
+; *** End added by AutoIt3Wrapper ***
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_outfile=C:\Documents and Settings\Administrator\Desktop\KellyIbmConnector.exe
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Res_Description=Password Manager and automation-tools in safe-environment
-#AutoIt3Wrapper_Res_Fileversion=0.0.1.0
-#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_Fileversion=0.0.1a
+#AutoIt3Wrapper_Res_LegalCopyright=New BSD License
+#AutoIt3Wrapper_Res_Language=4105
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Res_File_Add=E:\document\API\AutoIT\logotop_KellyInformatique.gif, IMAGE, KELLYIMAGE
+#AutoIt3Wrapper_Add_Constants=n
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
+Global $IsVpnReady = False
 
 #cs
   Development property, Patrick Riendeau 1997-2010, under old and new BSD License.
@@ -92,6 +99,16 @@
 #ce
 
 #include "KellyIbmEnumHandler.au3"
+#include "PasswordHandlerMainGui.au3"
+#include "KellyHelpPage.au3"
+
+
+
+#cs
+If $IsVpnReady == True Then
+  #include "ContivityVPNUserAccess.au3"
+EndIf
+#ce
 
 Func MainAppsSeqHandler ( $EnumId=$EAppsDefault, $EnumSubSeq = $EAppsSeqDefault )
   Local $STitle   = $ArrayInfo[$EnumId][$EnumSubSeq][$Etitle]
@@ -128,6 +145,7 @@ Func VpnPowerCAHandler( $EnumDataFieldID=$EAppsSeqLogin, $EnumId=$EAppsVPNPowerC
   EndIf
 EndFunc
 
+
 Func TreeLinePassword( $EnumDataFieldID=$EContentDataPwd, $EnumId=$EAppsTreeLinePass, $EnumSubSeq=$EAppsSeqLogin )
   Local $STitle     = $ArrayInfo[$EnumId][$EnumSubSeq][$Etitle]
   Local $SText      = $ArrayInfo[$EnumId][$EnumSubSeq][$EText]
@@ -140,9 +158,35 @@ Func TreeLinePassword( $EnumDataFieldID=$EContentDataPwd, $EnumId=$EAppsTreeLine
 EndFunc
 
 
+Func LotusHandlerIBM( $EnumDataFieldID=$EAppsSeqLogin, $EnumId=$EAppsLotusIBM, $EnumSubSeq=$EAppsSeqLogin )
+  Local $hwnd
+  Local $STitle     = $ArrayInfo[$EnumId][$EnumSubSeq][$Etitle]
+  Local $SText      = $ArrayInfo[$EnumId][$EnumSubSeq][$EText]
+  Local $SClassNN   = $ArrayInfo[$EnumId][$EnumSubSeq][$EClassNN]
+  Local $StrPasswd  = $ArrayDataHeader[$EnumId][$EnumSubSeq][$EnumDataFieldID]
+  $hwnd=WinGetHandle( $STitle, $SText )
+  If $hwnd <> 0 Then
+    ControlSend ( $hwnd, $SText, $SClassNN, $StrPasswd , 0 )
+  EndIf
+  $hwnd=WinGetHandle( $STitle, $SText )
 
+EndFunc
 
-Func LotusHandler( $EnumDataFieldID=$EAppsSeqLogin, $EnumId=$EAppsLotus, $EnumSubSeq=$EAppsSeqLogin )
+Func LotusHandlerBNC( $EnumDataFieldID=$EAppsSeqLogin, $EnumId=$EAppsLotusBNC, $EnumSubSeq=$EAppsSeqLogin )
+  Local $hwnd
+  Local $STitle     = $ArrayInfo[$EnumId][$EnumSubSeq][$Etitle]
+  Local $SText      = $ArrayInfo[$EnumId][$EnumSubSeq][$EText]
+  Local $SClassNN   = $ArrayInfo[$EnumId][$EnumSubSeq][$EClassNN]
+  Local $StrPasswd  = $ArrayDataHeader[$EnumId][$EnumSubSeq][$EnumDataFieldID]
+  $hwnd=WinGetHandle( $STitle, $SText )
+  If $hwnd <> 0 Then
+    ControlSend ( $hwnd, $SText, $SClassNN, $StrPasswd , 0 )
+  EndIf
+  $hwnd=WinGetHandle( $STitle, $SText )
+
+EndFunc
+
+Func LotusHandlerSametime( $EnumDataFieldID=$EAppsSeqLogin, $EnumId=$EAppsLotusSametime, $EnumSubSeq=$EAppsSeqLogin )
   Local $hwnd
   Local $STitle     = $ArrayInfo[$EnumId][$EnumSubSeq][$Etitle]
   Local $SText      = $ArrayInfo[$EnumId][$EnumSubSeq][$EText]
@@ -183,66 +227,22 @@ EndFunc
   or not .
 #ce
 Func TestConn()
-
-Local $WindowsName
-For $intAppsCount= 0 to $EAppsEnumSize
-  For $IntSeqAppsCount = 0 To $EAppsSeqEnumSize
-    $WindowsName=$ArrayInfo[$intAppsCount][$IntSeqAppsCount][$Etitle]
-    MsgBox( 4096, "Windows detection annonce", "Processing Windows $WindowsName$", 0 )
-    Switch $intAppsCount
-        Case $EAppsVPNPowerCA, $EAppsLotus
-            Switch $IntSeqAppsCount
-              Case $EAppsSeqDetect
-                MainAppsSeqHandler( $intAppsCount , $IntSeqAppsCount )
-            EndSwitch
-    EndSwitch
+  Local $WindowsName
+  For $intAppsCount= 0 to $EAppsEnumSize
+    For $IntSeqAppsCount = 0 To $EAppsSeqEnumSize
+      $WindowsName=$ArrayInfo[$intAppsCount][$IntSeqAppsCount][$Etitle]
+      MsgBox( 4096, "Windows detection annonce", "Processing Windows $WindowsName$", 0 )
+      Switch $intAppsCount
+          Case $EAppsVPNPowerCA, $EAppsLotusIBM, $EAppsLotusBNC
+              Switch $IntSeqAppsCount
+                Case $EAppsSeqDetect
+                  MainAppsSeqHandler( $intAppsCount , $IntSeqAppsCount )
+              EndSwitch
+      EndSwitch
+    Next
   Next
-Next
 EndFunc
 
-
-Func MainGui( )
-
-  #Region ### START Koda GUI section ### Form=E:\document\API\AutoIT\FormPasswordSenderKellyIBM.kxf
-  $ArrayGuiInterface[$EGuiChildNode] = GUICtrlCreateDummy()
-  $ArrayGuiInterface[$EGuiForm1] = GUICreate("User Content Management Facilities", 564, 240, 645, 289)
-  GUICtrlSendToDummy ( $ArrayGuiInterface[$EGuiChildNode], GUICtrlGetState( $ArrayGuiInterface[$EGuiForm1] ) )
-
-  $ArrayGuiInterface[$EGuiGrpHandlerSrv]        = GUICtrlCreateGroup("Kelly / IBM Password Management ", 20, 24, 513, 81)
-  $ArrayGuiInterface[$EGuiLabelLabelDeclServ]   = GUICtrlCreateLabel("Services Handler Name ", 39, 66, 162, 20)
-  $ArrayGuiInterface[$EGuiHandlerServNameCBBox] = GUICtrlCreateCombo("HandlerServNameCBBox", 211, 64, 214, 25)
-  GUICtrlSetData($ArrayGuiInterface[$EGuiHandlerServNameCBBox], "LotusHandler|VpnPowerCAHandler|TreeLinePassword", "VpnPowerCAHandler")
-  $ArrayGuiInterface[$EGuiButtonSend] = GUICtrlCreateButton("Send", 429, 64, 86, 25, $WS_GROUP)
-  GUICtrlCreateGroup("", -99, -99, 1, 1)
-  $ArrayGuiInterface[$EGuiButtonQuit] = GUICtrlCreateButton("Quit", 356, 144, 75, 25, $WS_GROUP)
-  $ArrayGuiInterface[$EGuiButtonHelp] = GUICtrlCreateButton("Help", 436, 144, 75, 25, $WS_GROUP)
-  $ArrayGuiInterface[$EGuiCompanyPic] = GUICtrlCreatePic("logotop_KellyInformatique.gif", 20, 104, 188, 76, BitOR($SS_NOTIFY,$WS_GROUP,$WS_CLIPSIBLINGS))
-
-  $ArrayGuiInterface[$EGuiGroup1] = GUICtrlCreateGroup("Password Handler", 4, 8, 553, 201)
-  GUICtrlCreateGroup("", -99, -99, 1, 1)
-  $ArrayGuiInterface[$EGuiStatusBar1] = _GUICtrlStatusBar_Create($ArrayGuiInterface[$EGuiForm1])
-  GUISetState(@SW_SHOW)
-  #EndRegion ### END Koda GUI section ###
-EndFunc
-
-Func GuiEventSequence()
-
-  While 1
-    $ArrayGuiInterface[$EGuinMsg] = GUIGetMsg()
-    $ArrayGuiInterface[$EGuiComboReadChoice] = GUICtrlRead ( $ArrayGuiInterface[$EGuiHandlerServNameCBBox] , "Combo" )
-
-    Switch $ArrayGuiInterface[$EGuinMsg]
-      Case $ArrayGuiInterface[$EGuiButtonQuit]
-        ExitLoop
-      Case $GUI_EVENT_CLOSE
-        ExitLoop
-      Case $ArrayGuiInterface[$EGuiButtonSend]
-        Execute( $ArrayGuiInterface[$EGuiComboReadChoice] & "()" )
-
-    EndSwitch
-  WEnd
-  Exit
-EndFunc
 
 
 Func _Main()
