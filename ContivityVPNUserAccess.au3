@@ -46,7 +46,7 @@ Global $ArrayEVpnInputForm[ $EnumVpnFormWxnameEnumSize ]
 
 Global $ArrayEVpnInputSig[$EnumVpnFormWxnameEnumSize]
 
-Global $ArrayUserTypeVpnUserAccess[2]=[ "", "" ]
+Global $ArrayUserTypeVpnUserAccess[2]=[ "PC_Name\r00t", "PC_Name\S00001" ]
 
 Global Enum _
   $ESetEventGuiSet      = 0 , _
