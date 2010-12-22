@@ -54,30 +54,35 @@ Global Enum _
   $EHIEnumSize              = 8
 
 Global Enum _
-  $Form1                    = 0  , _
-  $GroupBox1                = 1  , _
-  $Group1                   = 2  , _
-  $Label1                   = 3  , _
-  $Label2                   = 4  , _
-  $Label3                   = 5  , _
-  $Label4                   = 6 , _
-  $Label5                   = 7 , _
-  $GuiCtrlListTitle         = 8  , _
-  $GuiCtrlListText          = 9  , _
-  $GuiCtrlEditText          = 10 , _
-  $GuiCtrlListCtrlID        = 11  , _
-  $ButtonOK                 = 12 , _
-  $ButtonQuit               = 13 , _
-  $ButtonHelp               = 14 , _
-  $ButtonQuery              = 15 , _
-  $ButtonSend               = 16 , _
-  $StatusBar1               = 17 , _
-  $GuiCtrlCursor            = 18 , _
-  $GuiCtrlAutoITWindows     = 19 , _
-  $GuiCtrlCBoxOpt1          = 20 , _
-  $GuiCtrlCBoxOpt2          = 21 , _
-  $GuiCtrlCBoxOpt3          = 22 , _
-  $EFormEnumSize            = 23
+  $Form1                      = 0  , _
+  $GroupBox1                  = 1  , _
+  $Group1                     = 2  , _
+  $Label1                     = 3  , _
+  $Label2                     = 4  , _
+  $Label3                     = 5  , _
+  $Label4                     = 6  , _
+  $Label5                     = 7  , _
+  $GuiCtrlListTitle           = 8  , _
+  $GuiCtrlListText            = 9  , _
+  $GuiCtrlEditText            = 10 , _
+  $GuiCtrlListCtrlID          = 11 , _
+  $ButtonOK                   = 12 , _
+  $ButtonQuit                 = 13 , _
+  $ButtonHelp                 = 14 , _
+  $ButtonQuery                = 15 , _
+  $ButtonSend                 = 16 , _
+  $StatusBar1                 = 17 , _
+  $GuiCtrlCursor              = 18 , _
+  $GuiCtrlAutoITWindows       = 19 , _
+  $GuiCtrlCBoxOpt1            = 20 , _
+  $GuiCtrlCBoxOpt2            = 21 , _
+  $GuiCtrlCBoxOpt3            = 22 , _
+  $GuiCtrlIcon01              = 23 , _
+  $GuiCtrlAutoITWindowsInfo2  = 24 , _
+  $ButtonCOM                  = 25 , _
+  $GuiCtrlCBoxOpt4            = 26 , _
+  $GuiGroupAutoITIcon         = 27 , _
+  $EFormEnumSize              = 28
 
 Global $ArrayFrameInfo[$EHIEnumSize]
 
@@ -120,6 +125,13 @@ Global $CtrlCmdOption[$ESCCEnumSize] = [ _
   "GetSelected","EditPaste","CurrentTab","TabRight","TabLeft", "SendCommandID" _
   ]
 
+Global Enum _
+  $ECtrlIsControlCommand    = 0 , _
+  $ECtrlIsEnumSize          = 1 , _
+  $ECtrlIsDefault           = 0
+
+Global $CtrlCmdName[$ECtrlIsEnumSize] = [ "CtrCmd" ]
+
 $ArrayFrameInfo[$EHICheckBoxReturn] = $EnumCheckBoxFocusFree
 $ArrayFrameInfo[$EHICheckBoxAutoITReport] = $EnumCheckBoxNoAutoItLink
 
@@ -129,7 +141,7 @@ $ArrayFormQuery[$GuiCtrlListTitle][$EQueryStorageIndex] = 0
 Func ControlQuery()
   Local $StrFuncName = "ControlQuery"
   ConsoleWrite("@CRLF@From Func $StrFuncName$:@CRLF@" )
-  $ArrayFormQuery[$Form1][$EHwnd] = GUICreate( "Automation Stream", 496, 347, 877, 342 )
+  $ArrayFormQuery[$Form1][$EHwnd] = GUICreate( "Automation Stream",  497, 409, 933, 193 )
 
   GUISetIcon( "D:\002.ico" )
   GUISetFont( 9, 400, 0, "MS Sans Serif" )
@@ -138,37 +150,52 @@ Func ControlQuery()
   GUISetOnEvent($GUI_EVENT_MAXIMIZE,  "Form1Maximize" )
   GUISetOnEvent($GUI_EVENT_RESTORE,   "Form1Restore"  )
 
-  $ArrayFormQuery[$GroupBox1][$EHwnd]           = GUICtrlCreateGroup( "Text Send Form", 10, 1, 413, 278 )
-  $ArrayFormQuery[$Group1][$EHwnd]              = GUICtrlCreateGroup( "Windows Information", 21, 18, 385, 125 )
-  $ArrayFormQuery[$Label1][$EHwnd]              = GUICtrlCreateLabel( "Title: ", 31, 38, 36, 20 )
-  $ArrayFormQuery[$Label2][$EHwnd]              = GUICtrlCreateLabel( "Text:",  31, 63, 33, 20 )
-  $ArrayFormQuery[$Label3][$EHwnd]              = GUICtrlCreateLabel( "CtrlID: ", 31, 89, 42, 20 )
-  $ArrayFormQuery[$GuiCtrlListTitle][$EHwnd]    = GUICtrlCreateCombo( "", 71, 35, 186, 25 )
-  $ArrayFormQuery[$GuiCtrlListText][$EHwnd]     = GUICtrlCreateCombo( "", 71, 61, 186, 25 )
-  $ArrayFormQuery[$GuiCtrlListCtrlID][$EHwnd]   = GUICtrlCreateCombo( "", 71, 87, 186, 25 )
-  $ArrayFormQuery[$GuiCtrlCursor][$EHwnd]       = GUICtrlCreateCheckbox("Cursor Dependent", 272, 91, 129, 17)
-  $ArrayFormQuery[$GuiCtrlAutoITWindows][$EHwnd]= GUICtrlCreateCheckbox("Windows Info", 272, 112, 97, 17)
-  $ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd]     = GUICtrlCreateCombo( "" , 24, 250, 140, 17)
-  GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd], _ArrayToString($CtrlCmdOption, "|" ), $CtrlCmdOption[$ESCCDefault] )
-  $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]     = GUICtrlCreateCheckbox("Option 2", 170, 250, 140, 17)
-  $ArrayFormQuery[$GuiCtrlCBoxOpt3][$EHwnd]     = GUICtrlCreateCheckbox("Option 3", 276, 250, 140, 17)
+  $ArrayFormQuery[$GroupBox1][$EHwnd]                 = GUICtrlCreateGroup( "Text Send Form", 10, 1, 446, 311 )
+  $ArrayFormQuery[$Group1][$EHwnd]                    = GUICtrlCreateGroup( "Windows Information", 21, 18, 425, 141)
+  $ArrayFormQuery[$Label1][$EHwnd]                    = GUICtrlCreateLabel( "Title: ", 31, 38, 36, 20 )
+  $ArrayFormQuery[$Label2][$EHwnd]                    = GUICtrlCreateLabel( "Text:",  31, 63, 33, 20 )
+  $ArrayFormQuery[$Label3][$EHwnd]                    = GUICtrlCreateLabel( "CtrlID: ", 31, 89, 42, 20 )
+  $ArrayFormQuery[$GuiCtrlListTitle][$EHwnd]          = GUICtrlCreateCombo( "", 71, 35, 186, 25 )
+  $ArrayFormQuery[$GuiCtrlListText][$EHwnd]           = GUICtrlCreateCombo( "", 71, 61, 186, 25 )
+  $ArrayFormQuery[$GuiCtrlListCtrlID][$EHwnd]         = GUICtrlCreateCombo( "", 71, 87, 186, 25 )
+  $ArrayFormQuery[$GuiCtrlCursor][$EHwnd]             = GUICtrlCreateCheckbox( "Cursor Dependent", 264, 35, 129, 17 )
+  $ArrayFormQuery[$GuiCtrlAutoITWindows][$EHwnd]      = GUICtrlCreateCheckbox( "Windows Info", 264, 54, 97, 17 )
+  $ArrayFormQuery[$GuiCtrlAutoITWindowsInfo2][$EHwnd] = GUICtrlCreateCheckbox( "Windows Info2", 264, 78, 105, 17 )
+  $ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd]           = GUICtrlCreateCombo( "" , 121, 281, 139, 25 )
+  $ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd]           = GUICtrlCreateCombo( "" , 24, 281, 92, 25 )
+  $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateCombo( "" , 121, 281, 139, 25 )
 
-  $ArrayFormQuery[$ButtonQuery][$EHwnd]         = GUICtrlCreateButton( "Qu&ery", 271, 35, 51, 25, $WS_GROUP )
-  $ArrayFormQuery[$ButtonSend][$EHwnd]          = GUICtrlCreateButton( "&Send", 271, 59, 51, 25, $WS_GROUP )
+  $ArrayFormQuery[$GuiCtrlIcon01][$EHwnd]             = GUICtrlCreateIcon( "C:\Program Files\AutoIt3\Au3Info.exe", -1, 386, 107, 39, 38, BitOR( $SS_NOTIFY,$WS_GROUP ) )
+  $ArrayFormQuery[$GuiGroupAutoITIcon][$EHwnd]        = GUICtrlCreateGroup("AutoIT", 376, 90, 65, 65)
+
+  GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd], _ArrayToString($CtrlCmdName, "|" ), $CtrlCmdName[$ECtrlIsDefault ] )
+  GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd], _ArrayToString($CtrlCmdOption, "|" ), $CtrlCmdOption[$ESCCDefault] )
+
+
+
+  $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateCheckbox("Option 2", 298, 281, 74, 17 )
+  $ArrayFormQuery[$GuiCtrlCBoxOpt3][$EHwnd]           = GUICtrlCreateCheckbox("Option 3", 380, 281, 126, 17 )
+
+  $ArrayFormQuery[$ButtonQuery][$EHwnd]               = GUICtrlCreateButton( "Qu&ery", 14, 322, 51, 25, $WS_GROUP )
+  $ArrayFormQuery[$ButtonSend][$EHwnd]                = GUICtrlCreateButton( "&Send",  14, 346, 51, 25, $WS_GROUP )
 
   GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-  $ArrayFormQuery[$GuiCtrlEditText][$EHwnd]     = GUICtrlCreateEdit( "", 24, 167, 377, 81 )
+
+
+  $ArrayFormQuery[$GuiCtrlEditText][$EHwnd]           = GUICtrlCreateEdit( "", 24, 188, 425, 88)
 
   GUICtrlSetData( $ArrayFormQuery[$GuiCtrlEditText][$EHwnd], "" )
 
-  $ArrayFormQuery[$Label4][$EHwnd]              = GUICtrlCreateLabel( "Text Inside Control", 24, 146, 114, 20 )
+  $ArrayFormQuery[$Label4][$EHwnd]              = GUICtrlCreateLabel( "Text Inside Control", 24, 162, 114, 20 )
 
-  $ArrayFormQuery[$ButtonOK][$EHwnd]            = GUICtrlCreateButton( "&OK", 135, 287, 92, 27, $WS_GROUP )
+  $ArrayFormQuery[$ButtonOK][$EHwnd]            = GUICtrlCreateButton( "&OK", 184, 322, 90, 25, $WS_GROUP )
 
-  $ArrayFormQuery[$ButtonQuit][$EHwnd]          = GUICtrlCreateButton( "&Quit", 232, 288, 93, 25, $WS_GROUP )
+  $ArrayFormQuery[$ButtonQuit][$EHwnd]          = GUICtrlCreateButton( "&Quit",  275, 323, 90, 25, $WS_GROUP )
 
-  $ArrayFormQuery[$ButtonHelp][$EHwnd]          = GUICtrlCreateButton( "&Help", 331, 288, 92, 25, $WS_GROUP )
+  $ArrayFormQuery[$ButtonHelp][$EHwnd]          = GUICtrlCreateButton( "&Help", 365, 323, 90, 25, $WS_GROUP )
+
+  $ArrayFormQuery[$ButtonCOM][$EHwnd]           = GUICtrlCreateButton("&Com", 93, 323, 90, 25, $WS_GROUP)
 
   GUICtrlSetOnEvent( $ArrayFormQuery[$Label1][$EHwnd],                "Label1Click" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$Label2][$EHwnd],                "Label2Click" )
@@ -184,11 +211,14 @@ Func ControlQuery()
   GUICtrlSetOnEvent( $ArrayFormQuery[$ButtonOK][$EHwnd],              "ButtonOK" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$ButtonQuit][$EHwnd],            "ButtonQuit" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$ButtonHelp][$EHwnd],            "ButtonHelp" )
+  GUICtrlSetOnEvent( $ArrayFormQuery[$ButtonCOM][$EHwnd],             "ButtonCOM" )
 
   GUICtrlSetOnEvent( $ArrayFormQuery[$GuiCtrlAutoITWindows][$EHwnd],  "AutoItWindowsInfoReport" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd],       "GuiCheckBoxOpt1" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd],       "GuiCheckBoxOpt2" )
   GUICtrlSetOnEvent( $ArrayFormQuery[$GuiCtrlCBoxOpt3][$EHwnd],       "GuiCheckBoxOpt3" )
+
+  GUICtrlSetOnEvent( $ArrayFormQuery[$GuiCtrlIcon01][$EHwnd],         "AutoITLoader" )
 
 
   $ArrayFormQuery[$StatusBar1][$EHwnd]          = _GUICtrlStatusBar_Create( $ArrayFormQuery[$Form1][$EHwnd] )
@@ -198,6 +228,23 @@ Func ControlQuery()
   While 1
     Sleep( 100 )
   WEnd
+EndFunc
+
+Func AutoItFormTransfertInfo( $ArrayNameInfo , $EAVarHolder=0, $EAVarReference=1 )
+  Local $IntArrayCASS     = UBound( $ArrayNameInfo, 1 ) - 1
+  Local $IntLimBaseArray  = UBound( $ArrayNameInfo, 0 )
+  Local $IntLimDimArray   = UBound( $ArrayNameInfo, 1 )
+
+  ConsoleWrite( "Array[" & $IntLimBaseArray &"][" & $IntLimDimArray & "]@CRLF@" )
+
+  For $IntCxItemTest = 0 To $IntArrayCASS
+    If $ArrayNameInfo[$IntCxItemTest][$EAVarHolder] <> "" Then
+      Local $StrInfoGetter=$ArrayNameInfo[$IntCxItemTest][$EAVarHolder]
+      Local $TAddrHwndUpdate=$ArrayNameInfo[$IntCxItemTest][$EAVarReference]
+      ConsoleWrite( "@CRLF@Captured Information, AutoIT@CRLF@@TAB@HWND:$TAddrHwndUpdate$, Content: $StrInfoGetter$@CRLF@" )
+      GUICtrlSetData( $TAddrHwndUpdate, $StrInfoGetter, $StrInfoGetter )
+    EndIf
+  Next
 EndFunc
 
 Func GetAutoItWindowsInfo()
@@ -212,22 +259,19 @@ Func GetAutoItWindowsInfo()
   $StrAuText    = $ArrayFrameInfo[$EHITextContent]
   $StrAuCtrlID  = $ArrayFrameInfo[$EHICtrlID]
 
-  Local $ArrayCaseAss[3][2] = _
+  Local Enum _
+    $EVarGetter     = 0 , _
+    $EVarReference  = 1 , _
+    $EVarEnumSize   = 2
+
+  Local $ArrayCaseAss[3][$EVarEnumSize] = _
   [ _
     [ $StrAuTitle,  $ArrayFormQuery[$GuiCtrlListTitle][$EHwnd]   ], _
     [ $StrAuText,   $ArrayFormQuery[$GuiCtrlListText][$EHwnd]    ], _
     [ $StrAuCtrlID, $ArrayFormQuery[$GuiCtrlListCtrlID][$EHwnd]  ]  _
   ]
-  ConsoleWrite( "Array["&UBound($ArrayCaseAss,0)&"]["&UBound($ArrayCaseAss,1)&"]@CRLF@" )
+  AutoItFormTransfertInfo( $ArrayCaseAss , $EVarGetter, $EVarReference )
 
-  For $IntCxItemTest = 0 To UBound( $ArrayCaseAss , 1 )-1
-    If $ArrayCaseAss[$IntCxItemTest][0] <> "" Then
-      Local $StrInfoGetter=$ArrayCaseAss[$IntCxItemTest][0]
-      Local $TAddrHwndUpdate=$ArrayCaseAss[$IntCxItemTest][1]
-      ConsoleWrite( "@CRLF@Captured Information, AutoIT@CRLF@@TAB@HWND:$TAddrHwndUpdate$, Content: $StrInfoGetter$@CRLF@" )
-      GUICtrlSetData( $TAddrHwndUpdate, $StrInfoGetter, $StrInfoGetter )
-    EndIf
-  Next
 EndFunc
 
 Func AutoItWindowsInfoReport()
@@ -366,7 +410,6 @@ Func GuiCtrlListTitleChange()
   ConsoleWrite("@CRLF@From Func $StrFuncName$@CRLF@" )
   $ArrayFormQuery[$GuiCtrlListTitle][$EQueryGet] = GUICtrlRead( @GUI_CtrlId )
   Local $StrValue=$ArrayFormQuery[$GuiCtrlListTitle][$EQueryGet]
-
   ConsoleWrite( "@CRLF@GuiCtrlListTitleChange: $StrValue$@CRLF@" )
 
 EndFunc
@@ -382,6 +425,10 @@ Func ButtonQuit()
   Exit
 EndFunc
 
+Func ButtonCOM()
+
+EndFunc
+
 Func ButtonHelp()
   Local $StrFuncName = "ButtonHelp"
   ConsoleWrite("@CRLF@From Func $StrFuncName$@CRLF@" )
@@ -390,9 +437,9 @@ EndFunc
 Func CursorWaitPos()
   Local $StrFuncName = "CursorWaitPos"
   ConsoleWrite("@CRLF@From Func $StrFuncName$@CRLF@" )
-  ;$ArrayFrameInfo[$EHICheckBoxReturn]        = GUICtrlRead( $ArrayFormQuery[$GuiCtrlCursor][$EHwnd], "Checkbox" )
-  $ArrayFrameInfo[$EHICheckBoxReturn]        = GUICtrlRead( @GUI_CtrlId, "Checkbox" )
-  ConsoleWrite( "@CRLF@CheckBox Return : "& $ArrayFrameInfo[$EHICheckBoxReturn] &"@CRLF@" )
+  ;$ArrayFrameInfo[$EHICheckBoxReturn]     = GUICtrlRead( $ArrayFormQuery[$GuiCtrlCursor][$EHwnd], "Checkbox" )
+  $ArrayFrameInfo[$EHICheckBoxReturn]      = GUICtrlRead( @GUI_CtrlId, "Checkbox" )
+  ConsoleWrite( "@CRLF@CheckBox Return : " & $ArrayFrameInfo[$EHICheckBoxReturn] &"@CRLF@" )
 EndFunc
 
 Func Label1Click()
@@ -415,5 +462,8 @@ Func Label4Click()
   ConsoleWrite("@CRLF@From Func $StrFuncName$@CRLF@" )
 EndFunc
 
+Func AutoITLoader()
+  ShellExecute ( "C:\Program Files\AutoIt3\Au3Info.exe" ,"", "" ,"open" , @SW_SHOW )
+EndFunc
 
 ControlQuery()
