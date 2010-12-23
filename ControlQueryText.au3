@@ -1,3 +1,10 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_outfile=C:\Documents and Settings\Administrator\Desktop\ControlQueryText.exe
+#AutoIt3Wrapper_Res_Comment=version 0.1.0.0-rewomeci
+#AutoIt3Wrapper_Res_Description=Automation Stream to Query Information and Send Text to any type of Interface. Including Citrix Appliance designed conf.
+#AutoIt3Wrapper_Res_Fileversion=0.1.0.0
+#AutoIt3Wrapper_Res_Language=3084
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include <ButtonConstants.au3>
 #include <ComboConstants.au3>
 #include <EditConstants.au3>
@@ -149,7 +156,12 @@ Func ControlQuery()
   GUISetOnEvent($GUI_EVENT_MINIMIZE,  "Form1Minimize" )
   GUISetOnEvent($GUI_EVENT_MAXIMIZE,  "Form1Maximize" )
   GUISetOnEvent($GUI_EVENT_RESTORE,   "Form1Restore"  )
-
+  #cs
+    Text Send Form
+  #ce
+    #cs
+      Reserved to query Title/Text/Ctrl
+    #ce
   $ArrayFormQuery[$GroupBox1][$EHwnd]                 = GUICtrlCreateGroup( "Text Send Form", 10, 1, 446, 311 )
   $ArrayFormQuery[$Group1][$EHwnd]                    = GUICtrlCreateGroup( "Windows Information", 21, 18, 425, 141)
   $ArrayFormQuery[$Label1][$EHwnd]                    = GUICtrlCreateLabel( "Title: ", 31, 38, 36, 20 )
@@ -158,36 +170,59 @@ Func ControlQuery()
   $ArrayFormQuery[$GuiCtrlListTitle][$EHwnd]          = GUICtrlCreateCombo( "", 71, 35, 186, 25 )
   $ArrayFormQuery[$GuiCtrlListText][$EHwnd]           = GUICtrlCreateCombo( "", 71, 61, 186, 25 )
   $ArrayFormQuery[$GuiCtrlListCtrlID][$EHwnd]         = GUICtrlCreateCombo( "", 71, 87, 186, 25 )
+
+    #cs
+      Reserved  for Cursor Property/Windows Information link/Other CheckBox.
+    #ce
   $ArrayFormQuery[$GuiCtrlCursor][$EHwnd]             = GUICtrlCreateCheckbox( "Cursor Dependent", 264, 35, 129, 17 )
   $ArrayFormQuery[$GuiCtrlAutoITWindows][$EHwnd]      = GUICtrlCreateCheckbox( "Windows Info", 264, 54, 97, 17 )
   $ArrayFormQuery[$GuiCtrlAutoITWindowsInfo2][$EHwnd] = GUICtrlCreateCheckbox( "Windows Info2", 264, 78, 105, 17 )
-  $ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd]           = GUICtrlCreateCombo( "" , 121, 281, 139, 25 )
-  $ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd]           = GUICtrlCreateCombo( "" , 24, 281, 92, 25 )
-  $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateCombo( "" , 121, 281, 139, 25 )
 
+
+    #cs
+      Reserved for Icon and Loader
+    #ce
   $ArrayFormQuery[$GuiCtrlIcon01][$EHwnd]             = GUICtrlCreateIcon( "C:\Program Files\AutoIt3\Au3Info.exe", -1, 386, 107, 39, 38, BitOR( $SS_NOTIFY,$WS_GROUP ) )
   $ArrayFormQuery[$GuiGroupAutoITIcon][$EHwnd]        = GUICtrlCreateGroup("AutoIT", 376, 90, 65, 65)
 
-  GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd], _ArrayToString($CtrlCmdName, "|" ), $CtrlCmdName[$ECtrlIsDefault ] )
-  GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd], _ArrayToString($CtrlCmdOption, "|" ), $CtrlCmdOption[$ESCCDefault] )
+  #cs
+    Text Inside Control
+  #ce
+  $ArrayFormQuery[$Label4][$EHwnd]              = GUICtrlCreateLabel( "Text Inside Control", 24, 162, 114, 20 )
 
+    #cs
+      Reserved for Edit Field
+    #ce
+    $ArrayFormQuery[$GuiCtrlEditText][$EHwnd]           = GUICtrlCreateEdit( "", 24, 188, 425, 88)
+    GUICtrlSetData( $ArrayFormQuery[$GuiCtrlEditText][$EHwnd], "" )
 
+    #cs
+      Reserved for ComboBox Section
+    #ce
+    $ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd]           = GUICtrlCreateCombo( "" , 150, 281, 139, 25 )
+    $ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd]           = GUICtrlCreateCombo( "" , 24, 281, 120, 25 )
+    ;$ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateCombo( "" , 121, 281, 139, 25 )
+    GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt4][$EHwnd], _ArrayToString($CtrlCmdName, "|" ), $CtrlCmdName[$ECtrlIsDefault ] )
+    GUICtrlSetData($ArrayFormQuery[$GuiCtrlCBoxOpt1][$EHwnd], _ArrayToString($CtrlCmdOption, "|" ), $CtrlCmdOption[$ESCCDefault] )
 
-  $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateCheckbox("Option 2", 298, 281, 74, 17 )
-  $ArrayFormQuery[$GuiCtrlCBoxOpt3][$EHwnd]           = GUICtrlCreateCheckbox("Option 3", 380, 281, 126, 17 )
+    #cs
+      Reserved for CheckBox Section
+    #ce
+    $ArrayFormQuery[$GuiCtrlCBoxOpt2][$EHwnd]           = GUICtrlCreateRadio( "Getter ", 298, 281, 74, 17 )
+    $ArrayFormQuery[$GuiCtrlCBoxOpt3][$EHwnd]           = GUICtrlCreateRadio("Setter ", 380, 281, 126, 17 )
+
+  #cs
+    Button List in Bottom of the page.
+  #ce
 
   $ArrayFormQuery[$ButtonQuery][$EHwnd]               = GUICtrlCreateButton( "Qu&ery", 14, 322, 51, 25, $WS_GROUP )
   $ArrayFormQuery[$ButtonSend][$EHwnd]                = GUICtrlCreateButton( "&Send",  14, 346, 51, 25, $WS_GROUP )
+
 
   GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 
 
-  $ArrayFormQuery[$GuiCtrlEditText][$EHwnd]           = GUICtrlCreateEdit( "", 24, 188, 425, 88)
-
-  GUICtrlSetData( $ArrayFormQuery[$GuiCtrlEditText][$EHwnd], "" )
-
-  $ArrayFormQuery[$Label4][$EHwnd]              = GUICtrlCreateLabel( "Text Inside Control", 24, 162, 114, 20 )
 
   $ArrayFormQuery[$ButtonOK][$EHwnd]            = GUICtrlCreateButton( "&OK", 184, 322, 90, 25, $WS_GROUP )
 
@@ -463,7 +498,15 @@ Func Label4Click()
 EndFunc
 
 Func AutoITLoader()
+  ;; ControlHide( )
+  ProcessClose( "Au3Info.exe" )
   ShellExecute ( "C:\Program Files\AutoIt3\Au3Info.exe" ,"", "" ,"open" , @SW_SHOW )
+  Sleep( 3 )
+  Local $StrTitle="(Frozen) AutoIt v3 Window Info"
+  Local $StrText="Basic Window Info"
+  Local $StrClassID="Static6"
+
+ ;MouseMove ( x, y [, speed] )
 EndFunc
 
 ControlQuery()
