@@ -31,7 +31,7 @@ $IntRight=DllStructGetData($TagRectRegionOld, "Right" )
 $IntBottom=DllStructGetData($TagRectRegionOld, "Bottom" )
 $CtrlHwndNew=GUICtrlCreateEdit( "Test 123",  $IntLeft, $IntTop, ($IntRight-$IntLeft), ($IntBottom-$IntTop) , -1, -1 )
 ControlHide("Untitled - Notepad", "", "Edit1")
-$CtrlCopy=
+$CtrlCopy=DllStructCreate( "" )
 
 Sleep( 5000 )
 ControlShow("Untitled - Notepad", "", "Edit1")
